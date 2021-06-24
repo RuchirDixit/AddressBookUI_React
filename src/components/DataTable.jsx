@@ -7,7 +7,10 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
+import {deleteContact} from '../services/ContactsService';
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.common.black,
@@ -26,17 +29,6 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
 
 const useStyles = makeStyles({
   table: {
@@ -44,6 +36,9 @@ const useStyles = makeStyles({
   },
 });
 
+const removeContact = (id) => {
+    deleteContact(id)
+}
 export default function DataTable({data}) {
   const classes = useStyles();
 
@@ -57,10 +52,12 @@ export default function DataTable({data}) {
             <StyledTableCell align="center">LAST NAME</StyledTableCell>
             <StyledTableCell align="center">EMAIL ID</StyledTableCell>
             <StyledTableCell align="center">MOBILE NUMBER</StyledTableCell>
+            <StyledTableCell align="center">ADDRESS</StyledTableCell>
             <StyledTableCell align="center">REGISTERED DATE</StyledTableCell>
             <StyledTableCell align="center">UPDATED DATE</StyledTableCell>
             <StyledTableCell align="center">ZIP CODE</StyledTableCell>
             <StyledTableCell align="center">CITY</StyledTableCell>
+            <StyledTableCell align="right"></StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -73,10 +70,19 @@ export default function DataTable({data}) {
               <StyledTableCell align="center">{row.lastName}</StyledTableCell>
               <StyledTableCell align="center">{row.emailId}</StyledTableCell>
               <StyledTableCell align="center">{row.mobileNumber}</StyledTableCell>
+              <StyledTableCell align="center">{row.address}</StyledTableCell>
               <StyledTableCell align="center">{row.registeredDate}</StyledTableCell>
               <StyledTableCell align="center">{row.updatedDate}</StyledTableCell>
               <StyledTableCell align="center">{row.zipcode}</StyledTableCell>
               <StyledTableCell align="center">{row.city}</StyledTableCell>
+              <StyledTableCell align="right">
+                  <IconButton onClick={removeContact(row.id)}>
+                        <DeleteIcon />
+                  </IconButton>
+                  <IconButton>
+                        <EditIcon />
+                  </IconButton>
+              </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
@@ -84,24 +90,3 @@ export default function DataTable({data}) {
     </TableContainer>
   );
 }
-
-// export default function DataTable({data}) {
-
-//     const columns = data[0] && Object.keys(data[0])
-//     return(
-//         <table border={1} cellSpacing={4} cellPadding={4}>
-//             <thead>
-//                 <tr>
-//                     {data[0] && columns.map((heading) => <th>{heading.toUpperCase()}</th>)}
-//                 </tr> 
-//             </thead>
-//             <tbody>
-//                     {data.map(row => <tr>
-//                         {
-//                             columns.map(column => <td>{row[column]}</td>)
-//                         }
-//                     </tr>)}
-//             </tbody>
-//         </table>
-//     )
-// }

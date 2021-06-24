@@ -1,15 +1,28 @@
 import React, {useState, useEffect} from 'react';
+import { useSelector, useDispatch } from "react-redux";
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import {getContacts} from './services/ContactsService'
 import DataTable from './components/DataTable'
+import Register from './components/Register';
+import Dialog from './components/Dialog';
 import './App.css';
 function App() {
 
   const [data,setData] = useState([])
   const [query, setQuery] = useState("")
 
-  useEffect(() => {
-    const response = getContacts()
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   const loadSpots = async () => {
+  //     const response= await dispatch(getContacts());
+  //     response.then((contacts) => setData(contacts))
+  //   };
+  //   loadSpots();
+  // },[dispatch])
+
+  React.useEffect(() => {
+    const response= getContacts()
     response.then((contacts) => setData(contacts))
   })
 
@@ -25,16 +38,18 @@ function App() {
   return (
     <div className="App">
       <div>
-        <input 
+        <TextField 
+          id="standard-basic" 
           type="text"
           placeholder="Search page"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-        />
-      </div> <br/>
-      <Button variant="contained" color="primary">
-        Add Contact
-      </Button>    <br/>
+         />        
+      </div>
+     
+       <br/>
+      <Dialog />
+      <div><br /><br /></div>
       <div className="container"> 
         <DataTable
           data = {search(data)}
